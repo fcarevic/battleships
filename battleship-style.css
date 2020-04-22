@@ -1,0 +1,111 @@
+body { height: 100%; }
+.header{
+    background-image: radial-gradient(white 60%, lightblue, blue);
+  height: 50pt;
+  border-color: black;
+  border-width: 2pt;
+  border-style: solid;
+  border-radius: 5pt;
+}
+.header div {height: 100%;}
+.header img {
+    height: 100%;
+    width: auto;
+    
+}
+body {background-image: url('assets/back.gif');
+background-repeat: no-repeat;
+background-size: cover;}
+.pozadina {
+    
+    background-image: url('assets/ezgif.com-gif-maker.gif');
+    background-repeat: no-repeat;
+    background-position: center ;
+    background-size: 70%;
+    background-color: #f3f3f3;
+  
+}
+ #p1{
+     border-color: blue;
+ }
+ #p2{
+     border-color: aqua;
+ }
+.ikonica{
+    height: 100%;
+    width: auto;
+}
+.visina30{
+    height: 30pt;
+}
+
+.providno{
+    opacity: 50%;
+}
+.round {
+    
+    border-radius: 5pt;
+    border-width: 2pt;
+}
+
+/*     stil za battleship-setup ********************************* */  
+
+.tabela{
+    margin: auto;
+    text-align: center;
+    
+}
+    
+    
+    
+
+
+
+    
+td,th{
+    padding-right: 3pt;
+    border-style: solid;
+    height: 20pt;
+    width: 20pt;
+    
+}
+.tekst {
+    font-style:italic ;
+    font-weight: bold;
+    font-family: "Lucida Console", Courier, monospace;
+    border-style: none;
+}
+.polje, .polje1, .polje2{
+    border-style: dotted;
+    opacity: 50%;
+    background-color: darkkhaki;
+    border-color: blue;
+}
+.ime{
+    border-color: blue;
+    border-style: solid;
+    background-color: darkturquoise;
+
+
+}
+
+
+.availships, .availships td{
+    border-style: none;
+    border-radius: 3pt;
+    
+}
+.availships{
+    border-spacing: 2pt;
+    border-collapse: separate;
+    margin: 0px auto;
+    
+}
+
+.boat {
+    background-image: url('assets/boat.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    
+}
