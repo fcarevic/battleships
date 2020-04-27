@@ -11,6 +11,7 @@ var aliveShips = [[4,3,2,1],[4,3,2,1]];
 var numhits = [[0,0,0,0],[0,0,0,0]];
 var hitmap= new Map();
 var allShips= [ [], [] ];
+var gameover=false;
 
 
 var srcIcons= ["assets/user.png", "assets/user2.png"];
@@ -18,6 +19,7 @@ var srcIcons= ["assets/user.png", "assets/user2.png"];
 
 
 $(document).ready(function(){
+    
     generateIds();
    
 
@@ -49,6 +51,7 @@ $("#btnusers").on({
 
 $("#ime_korisnika").text(sessionStorage.getItem("user1"));
 if(sessionStorage.getItem("state")=="setup"){
+   
   resetWithNamesSaved();
 $(".polje").on({
     mousedown : function() {
@@ -83,8 +86,10 @@ $(document).mouseup(function (){
 });
 }
 if(sessionStorage.getItem("state")=="battle") {
+    
    generateArray();
 $(".polje2").click(function(){
+    if(gameover)return;
    hit(this);
 });
 changeUser();
@@ -106,9 +111,11 @@ function check(niz){
  
    let col=-1;
    let row=-1;
+   let arrofId=[];
       niz.forEach(function(val,key){
            
            let  id = parseInt(key);
+           arrofId.push(id);
            let i = Math.floor(id/NUMCOLS);
            let j = id%NUMCOLS;
            
@@ -118,9 +125,12 @@ function check(niz){
            else flag=false;
            console.log(flag);
            if(checkSelf(i,j)) {niz.delete(key);  flag=false; console.log('usao');}
-        else if ( checkUp(i,j)||  checkDown(i,j) ||  checkLeft(i,j) ||  checkRight(i,j)) {flag=false; console.log('usao ovde');}
+        else if ( checkUpAndCorners(i,j)||  checkDownAndCorners(i,j) ||  checkLeft(i,j) ||  checkRight(i,j)) {flag=false; console.log('usao ovde');}
          });
-         
+        arrofId.sort(function(a,b){return a-b;});
+        for(let i=0; i< arrofId.length-1;i++) { //if not connected fields
+           if ( Math.floor(arrofId[i]/NUMCOLS) +1 != Math.floor(arrofId[i+1]/NUMCOLS)  && arrofId[i]%NUMCOLS+1 != arrofId[i+1]%NUMCOLS ) flag=false;
+        }
     return flag;
 
 }
@@ -220,15 +230,16 @@ function saveBoat(niz){
             });
         }
 }
-function checkUp(x,y){
+
+function checkUpAndCorners(x,y){
     if(x==0) return false;
      if(sessionStorage.getItem(user[usersturn] + (x-1) +","+y)!=null) return true;
-     return false;
+     return checkLeft(x-1,y) || checkRight(x-1,y); //checks upper corners 
 }
-function checkDown(x,y){
+function checkDownAndCorners(x,y){
     if(x==NUMROWS-1) return false;
      if(sessionStorage.getItem(user[usersturn] + (x+1) +","+y)!=null) return true;
-     return false;
+     return checkLeft(x+1,y) || checkRight(x+1,y); //checks lower corners
 }
 function checkLeft(x,y){
     if(y==0) return false;
@@ -332,8 +343,15 @@ function checkDestroyed(x,y){
         $("#numboats"+boatSize).text(aliveShips[opponent][boatSize-1]);
 
         let sum = 0;
-        aliveShips[opponent].forEach(el=>{sum+=el;})
-        if(sum==0) alert('gameover');
+        aliveShips[opponent].forEach(el=>{sum+=el;}) //checks whether the game is over
+        if(sum==0) {
+            gameover=true;
+            let div =document.getElementById('gameover');
+            
+            div.innerHTML= '<div id="gameover" class="alert alert-success mt-2"> <h3> The game is over, battle is your\'s!</h3> click to play again</div> '
+            div.onclick= function(){ clearSession(); window.location='battleship-welcome.html';}
+            
+        }
         
     }
     
@@ -362,3 +380,23 @@ function resetWithNamesSaved(){
     sessionStorage.setItem("user2", user2);
     sessionStorage.setItem("state", "setup");
 }
+/*
+function configureWindowBackButtonGame(){
+        if(sessionStorage.getItem('state')=='game'){
+            let answer= confirm("Game will be lost, are you sure?");
+            if(answer) {
+                resetWithNamesSaved();
+                window.location='battleship-setup.html';
+            }
+        }
+
+
+
+}
+
+function configureWindowBackButtonSetup (){
+    if(sessionStorage.getItem('state')=='setup'){
+        clearSession();
+        window.location='battleship-welcome.html';
+    }
+}*/
