@@ -19,6 +19,7 @@ var srcIcons= ["assets/user.png", "assets/user2.png"];
 
 
 $(document).ready(function(){
+    configureBackButton();
     
     generateIds();
    
@@ -379,6 +380,24 @@ function resetWithNamesSaved(){
     sessionStorage.setItem("user1", user1);
     sessionStorage.setItem("user2", user2);
     sessionStorage.setItem("state", "setup");
+}
+function configureBackButton(){
+    if(window.location.href.indexOf('battleship-welcome')!=-1){
+        clearSession();
+
+    }else if(window.location.href.indexOf('battleship-setup')!=-1){
+        
+        if(sessionStorage.getItem('user1')==null) window.location='battleship-welcome.html';
+        else 
+        resetWithNamesSaved();
+
+    } 
+    else if(window.location.href.indexOf('battleship-game')!=-1){
+        if(sessionStorage.getItem('user1')==null) window.location='battleship-welcome.html';
+        else 
+        if(sessionStorage.getItem('allships')==null) window.location='battleship-setup.html';
+
+    } 
 }
 /*
 function configureWindowBackButtonGame(){
